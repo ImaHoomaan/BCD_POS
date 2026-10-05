@@ -1,0 +1,9 @@
+node_modules/
+client-dist/
+release/
+data/
+*.db
+*.db-wal
+*.db-shm
+.vite/
+coverage/

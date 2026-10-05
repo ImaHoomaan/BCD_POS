@@ -1,0 +1,80 @@
+{
+  "name": "bcd-restaurant-pos",
+  "productName": "BCD Restaurant POS",
+  "version": "1.0.0",
+  "description": "Standalone offline restaurant POS with Owner and Cashier roles",
+  "main": "electron/main.cjs",
+  "author": "BCD",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "init-db": "node server/cli.js init-db",
+    "seed-db": "node server/cli.js seed-db",
+    "start:server": "node server/cli.js run",
+    "dev": "concurrently -k -n api,ui \"node server/cli.js run --dev\" \"vite --config vite.config.mjs\"",
+    "build": "vite build --config vite.config.mjs",
+    "electron": "electron .",
+    "start": "npm run build && electron-builder install-app-deps && electron . && npm rebuild better-sqlite3",
+    "dist": "npm run build && electron-builder --win nsis && npm rebuild better-sqlite3",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "better-sqlite3": "13.0.3",
+    "express": "5.2.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "@vitejs/plugin-react": "6.1.1",
+    "concurrently": "10.0.5",
+    "electron": "44.5.1",
+    "electron-builder": "26.15.3",
+    "fast-check": "4.10.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-router-dom": "7.18.4",
+    "recharts": "3.10.1",
+    "supertest": "7.3.1",
+    "tailwindcss": "4.3.3",
+    "vite": "8.3.2",
+    "vitest": "5.0.3"
+  },
+  "build": {
+    "appId": "com.bcd.restaurantpos",
+    "productName": "BCD Restaurant POS",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**/*",
+      "server/**/*",
+      "client-dist/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "**/node_modules/better-sqlite3/**"
+    ],
+    "win": {
+      "signAndEditExecutable": false,
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false
+    }
+  }
+}
